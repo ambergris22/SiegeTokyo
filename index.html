@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SIEGE TOKYO</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="js/story.js" type="module" defer></script>
+  <script src="js/input.js" type="module" defer></script>
+</head>
+
+<body>
+  <!-- list of audio files to be used -->
+  <audio id="actionlogSound" src="./sounds/actionlog.mp3"></audio>
+  <audio id="telemetry" src="./sounds/telemetry.mp3"></audio>
+  <audio id="ghoulScreamSound" src="./sounds/ghoulscream.mp3"></audio>
+  <audio id="sendHuntersSound" src="./sounds/SendHunters.mp3"></audio>
+  <audio id="battleEndSound" src="./sounds/BattleEnd.mp3"></audio>
+  <audio id="splashSound" src="./sounds/Splash.mp3"></audio>
+  <audio id="arrivalSound" src="./sounds/Arrival.mp3"></audio>
+
+  <div id="quadrant-container">
+    <div id="top-left-quadrant" class="quadrant">
+      <div id="map-container">
+        <div class="grid">
+          <!-- Grid cells will be dynamically generated here -->
+        </div>
+      </div>
+    </div>
+    <div id="top-right-quadrant" class="quadrant">
+
+      <div class="header-container">
+           <h1>SIEGE TOKYO</h1>
+      </div>
+      <br>
+
+      <div id="story-container">
+        <!-- Story snippets will be displayed here -->
+      </div>
+      <div id="battle-results-container">
+        <!-- The battle results table will be inserted here -->
+      </div>
+      <div id="action-log" class="quadrant">
+        <!-- Log entries will be dynamically added here -->
+      </div>
+    </div>
+    <div id="bottom-left-quadrant" class="quadrant">
+      <div id="input-panel">
+        <form id="game-form">
+          <div>
+            <label for="faction-select">GAME MODE:&ensp;</label>
+            <input type="radio" id="classicMode" name="mode" value="Classic" checked>
+            <label for="classicMode">Classic</label>
+            <input type="radio" id="fastMode" name="mode" value="Fast">
+            <label for="fastMode">Fast</label>
+          </div><br>
+          <div><label for="faction-select">CHOOSE A FACTION:&ensp;</label>
+            <button id="citizens-button" type="button">Citizens</button>
+            <button id="ghouls-button" type="button">Ghouls</button>
+          </div><br>
+          <div class="slider-container">
+            <label class="slider-label" for="intensity-slider">INTENSITY:&ensp;</label>
+            <input class="slider" type="range" id="intensity-slider" name="intensity" min="1" max="99" value="25">
+            <span id="intensity-value"></span>
+          </div>
+          <div class="slider-container">
+            <label class="slider-label" for="attack-slider">ATTACK:&ensp;</label>
+            <input class="slider" type="range" id="attack-slider" name="attack" min="1" max="99" value="50">
+            <span id="attack-value"></span>
+          </div>
+          <div class="slider-container">
+            <label class="slider-label" for="defense-slider">DEFENSE:&ensp;</label>
+            <input class="slider" type="range" id="defense-slider" name="defense" min="1" max="99" value="50">
+            <span id="defense-value"></span>
+          </div>
+          <br><label for="user-input">START:&ensp;</label><button id="start-button" type="submit">Begin the
+            Siege</button>
+          <br><br>WAVES:&ensp;<button id="send-wave-2-button">Send Wave 2</button> <button id="send-wave-3-button">Send
+            Wave 3</button>
+          <br><br>SPECIAL:&ensp;<button id="send-hunters-button">Send Hunters</button> <button
+            id="ghoul-scream-button">Ghoul
+            Scream</button><br>
+        </form>
+      </div>
+      <div id="cell-details"></div>
+    </div>
+
+    <div id="bottom-right-quadrant" class="quadrant">
+      <div id="time-panels" class="quadrant">
+        <div class="status-panel">
+          <h3>Tokyo</h3>
+          <span id="tokyo-time" class="panel-stamp">-</span>
+        </div>
+        <div class="status-panel">
+          <h3>Siege Time</h3>
+          <span id="game-time" class="panel-stamp">-</span>
+        </div>
+        <div class="status-panel">
+          <h3>Chosen Faction</h3>
+          <span id="chosen-faction" class="panel-stamp">-</span>
+        </div>
+        <div class="status-panel">
+          <h3>Scan Pass:</h3>
+          <span id="scan-pass-number" class="panel-stamp">-</span>
+        </div>
+      </div>
+
+      <div id="status-panels" class="quadrant">
+        <div class="status-panel">
+          <h3>Sectors</h3>
+          <span class="status-count"></span>
+        </div>
+        <div class="status-panel">
+          <h3>Neutral</h3>
+          <span id="neutral-count" class="status-count">0</span>
+        </div>
+        <div class="status-panel">
+          <h3>In Conflict</h3>
+          <span id="fight-count" class="status-count">0</span>
+        </div>
+        <div class="status-panel">
+          <h3>Ghoul Held</h3>
+          <span id="ghoul-count" class="status-count">0</span>
+        </div>
+        <div class="status-panel">
+          <h3>Citizen Held</h3>
+          <span id="citizen-count" class="status-count">0</span>
+        </div>
+      </div>
+
+
+      <div id="aggregate-panels" class="quadrant">
+        <div class="status-panel">
+          <h3>Faction</h3><span class="aggregate-label"></span>
+          <span class="aggregate-value">Ghoul</span><br>
+          <span class="aggregate-value">Citizen</span>
+        </div>
+        <div class="status-panel">
+          <h3>Health</h3><span class="aggregate-label"></span>
+          <span id="ghoul-aggregate-health" class="aggregate-value">0</span><br>
+          <span id="citizen-aggregate-health" class="aggregate-value">0</span>
+        </div>
+        <div class="status-panel">
+          <h3>Strength</h3><span class="aggregate-label"></span>
+          <span id="ghoul-aggregate-strength" class="aggregate-value">0</span><br>
+          <span id="citizen-aggregate-strength" class="aggregate-value">0</span>
+        </div>
+        <div class="status-panel">
+          <h3>Aggression</h3><span class="aggregate-label"></span>
+          <span id="ghoul-aggregate-aggression" class="aggregate-value">0</span><br>
+          <span id="citizen-aggregate-aggression" class="aggregate-value">0</span>
+        </div>
+        <div class="status-panel">
+          <h3>Weapon</h3><span class="aggregate-label"></span>
+          <span id="ghoul-aggregate-weapon" class="aggregate-value">0</span><br>
+          <span id="citizen-aggregate-weapon" class="aggregate-value">0</span>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <footer id="footer" style="text-align: center;">
+    <span style="color: white; font-size: 8;">
+        <a href="https://tokyorebels.io/" target="_blank" style="color: white; text-decoration: none;">© The Tokyo Rebels™</a>
+    </span>
+    <a href="#" id="credits-link" style="color: white; float: right;">Credits</a>
+</footer>
+</body>
+
+</html>

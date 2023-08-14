@@ -1,0 +1,41 @@
+This Simulator was made for the Tokyo Rebels NFT community, <a href="https://tokyorebels.io" target="_blank">>tokyorebels.io</a>
+
+__Story Construction__:
+六 - Ambergris
+
+__Tools__:
+Visual Studio Code (v1.80.2)
+
+__Sound Effect Attributions__: under the <a href="https://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">Creative Commons Attribute Licence</a>
+
+slider sounds
+https://freesound.org/people/Clusman/sounds/543052/
+https://freesound.org/people/AlienXXX/sounds/271215/
+https://freesound.org/people/DeVern/sounds/586055/
+
+send hunters
+* https://freesound.org/people/edge%20of%20october/sounds/101356/
+
+ghoul scream
+https://freesound.org/people/audione/sounds/161404/
+https://freesound.org/people/Syna-Max/sounds/56304/
+* https://freesound.org/people/bastardwrio/sounds/401915/
+
+start siege
+https://freesound.org/people/foxraid/sounds/446646/
+
+ambience
+*https://freesound.org/people/BurghRecords/sounds/456101/
+
+typing - action log
+* https://freesound.org/people/aj_heels/sounds/520570/
+* https://freesound.org/people/hz37/sounds/463751/
+
+end screen
+* https://freesound.org/people/Duar/sounds/566070/
+
+metal texture
+<a href="https://www.freepik.com/free-vector/metallic-texture-background_5617363.htm#query=metal%20gradient&position=1&from_view=search&track=ais#position=1&query=metal%20gradient">Image by pikisuperstar</a> on Freepik
+
+
+

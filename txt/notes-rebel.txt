@@ -1,0 +1,317 @@
+  // Function to check enemy presence in the cell
+  function checkEnemy(row, col, cellStatus) {
+    // Find the cell in the cellStatus array
+    const cell = cellStatus.find(cell => cell.row === row && cell.col === col);
+
+    // Check if the cell exists and has a valid status
+    if (cell && cell.status !== undefined) {
+      // Check if the cell status is not Neutral, no need to proceed further
+      if (cell.status !== STATUS.NEUTRAL) {
+        return;
+      }
+
+      const cellIndex = row * numColumns + col;
+
+      if (ghoulCount[cellIndex] > 0 && citizenCount[cellIndex] > 0) {
+        const cellElement = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+        updateCellStatus(row, col, STATUS.FIGHT); // Update the cell status in the cellStatus array
+        
+        cellElement.classList.add('fighting'); // Add the "fighting" class
+        addToActionLog(`Fighting Detected in Sector ${row}${col}`);
+        const telemetrySound = document.getElementById('telemetry');
+        telemetrySound.volume = 0.5;
+        telemetrySound.playbackRate = 1.5;
+        telemetrySound.play();
+
+        if (cell.status === STATUS.FIGHT && !snipFightDisplayed) {
+
+          // Call the snipFight story snippet
+          const snippetFight = storySnippets.find((s) => s.title === 'snipFight');
+          if (snippetFight) {
+            displayStorySnippet(snippetFight.title);
+            snipFightDisplayed = true; // Set the flag to indicate the snippet has been displayed
+            if (chosenFaction === 'Citizens') { sendHuntersButton.disabled = false; } else ghoulScreamButton.disabled = false;
+            const topRightQuadrant = document.getElementById('top-right-quadrant');
+            // Remove the background image when changing the snippet
+            removeAllSnipImages();// Remove all existing classes from the element
+            topRightQuadrant.classList.add('background-fight'); // Add the .background-intro class
+          }
+          // return;
+        }
+      }
+      // console.log(`CheckEnemy (${row}, ${col}) - ghoulCount: ${ghoulCount[cellIndex]}, citizenCount: ${citizenCount[cellIndex]}, cellstatus: (${cell.status})`);
+    }
+  }
+  
+ // Function to restart the siege (called when "REMATCH" button is clicked)
+  function restartSiege() {
+    location.reload(); // Reload the page to restart the siege
+  }
+
+
+// Define the interval duration in milliseconds (5 seconds)
+const rebelInterval = 5000;
+let gameStarted = false;
+
+
+// Define Rebel class
+class Rebel {
+  constructor(name, faction, strength, aggression, health, weapon, luck) {
+    this.name = name;
+    this.faction = faction;
+    this.strength = strength;
+    this.aggression = aggression;
+    this.health = health;
+    this.weapon = weapon;
+    this.luck = luck;
+  }
+
+  // Add methods or functions for the rebel class if needed
+}
+
+// Initialize an empty array to store the rebels
+const rebels = [];
+
+// Function to create a single rebel object with random attributes
+function createRebels(cellStatus) {
+  const rebels = [];
+
+  // Clear the map by removing all rebel circles
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach(cell => {
+    cell.innerHTML = ''; // Remove any existing rebel circles
+  });
+
+  for (let i = 1; i <= 100; i++) {
+    const faction = i % 2 === 0 ? "Citizen" : "Ghoul";
+    const strength = getRandomNumber(25, 99);
+    const aggression = getRandomNumber(25, 99);
+    const health = 100;
+    const weapon = "None";
+    const luck = getRandomNumber(25, 99);
+
+    const rebel = new Rebel(`Rebel ${i}`, faction, strength, aggression, health, weapon, luck);
+    rebels.push(rebel);
+
+    // Display the rebel on the grid
+    displayRebelOnGrid(rebel, cellStatus);
+  }
+
+  return rebels;
+}
+
+
+// Function to create rebels and display them on the grid
+function createRebels(cellStatus) {
+  for (let i = 1; i <= 100; i++) {
+    const rebel = createRebel();
+    rebels.push(rebel);
+    displayRebelOnGrid(rebel, cellStatus);
+  }
+}
+
+// Function to get a random number within a range
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function displayRebelOnGrid(rebel) {
+  const cell = getRandomCell();
+  const rebelCircle = document.createElement("div");
+  rebelCircle.className = rebel.faction === "Ghoul" ? "ghoul-circle" : "citizen-circle";
+  rebelCircle.style.width = "10px"; // Adjust the width of the circle
+  rebelCircle.style.height = "10px"; // Adjust the height of the circle
+  cell.appendChild(rebelCircle);
+}
+
+// Function to get a random grid cell position
+function getRandomCell() {
+  const randomIndex = Math.floor(Math.random() * cellStatus.length);
+  const { row, col } = cellStatus[randomIndex];
+  const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+  return cell;
+}
+
+
+// Create an initial set of rebels
+createRebels(cellStatus);
+console.log(rebels);
+
+// Start spawning rebels every 5 seconds
+setInterval(function () {
+  const rebel = createRebel();
+  rebels.push(rebel);
+  displayRebelOnGrid(rebel, cellStatus);
+}, rebelInterval);
+
+
+//FIGHTING
+
+function detectFighting(cellStatus) {
+  const ghouls = cellStatus.filter(cell => cell.status === STATUS.GHOUL);
+  const citizens = cellStatus.filter(cell => cell.status === STATUS.CITIZEN);
+
+  // Check if there is at least one Ghoul and one Citizen in the same cell
+  const fighting = ghouls.some(ghoul => citizens.some(citizen => ghoul.row === citizen.row && ghoul.col === citizen.col));
+
+  return fighting;
+}
+
+// Function to update the cell styles based on fighting status
+function updateCellStyles(cellStatus) {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach(cell => {
+    const row = parseInt(cell.dataset.row);
+    const col = parseInt(cell.dataset.col);
+
+    // Check if the cell is involved in fighting
+    const fighting = detectFighting(cellStatus.filter(cell => cell.row === row && cell.col === col));
+
+    // Update the cell border color based on fighting status
+    cell.style.borderColor = fighting ? 'yellow' : 'black';
+  });
+}
+
+/*
+ ghoulScreamButton.addEventListener('click', function () {
+    ghoulScreamButton.disabled = true; // once only use
+    addToActionLog(`The Ghoul King scream enrages the horde`);
+  
+    const snippetGhoulKing = storySnippets.find((s) => s.title === 'snipGhoulKing');
+    if (snippetGhoulKing) {
+      displayStorySnippet(snippetGhoulKing.title);
+    }
+  
+    // Increase ghoul aggression for 30 seconds
+    const cellsWithGhouls = cellStatus.filter(cell => cell.status === STATUS.FIGHT || cell.status === STATUS.HUNTED);
+    cellsWithGhouls.forEach(cell => {
+      if (cell.cellElement) {
+        cell.cellElement.classList.remove('fighting'); // remove fight style
+        cell.cellElement.classList.add('rage'); // Apply the CSS class for rage
+      }
+    });
+  
+    // Find ghouls within the cells and increase their aggression
+    const ghoulsInCells = rebels.filter(rebel => rebel.faction === 'Ghoul' && rebel.status === 'Alive');
+    ghoulsInCells.forEach(ghoul => {
+      ghoul.aggression *= 2; // Increase ghoul aggression
+    });
+  
+    // After 30 seconds, reset ghoul aggression and remove the purple border
+    setTimeout(() => {
+      cellsWithGhouls.forEach(cell => {
+        if (cell.cellElement) {
+          cell.cellElement.classList.remove('rage'); // Remove the CSS class for rage
+          cell.cellElement.classList.add('fighting'); // return fighting style
+        }
+      });
+  
+      // Reset ghoul aggression after 30 seconds
+      ghoulsInCells.forEach(ghoul => {
+        ghoul.aggression /= 2; // Reset ghoul aggression back to the original value
+      });
+    }, rageTime); // 30 seconds in milliseconds
+  });
+  
+function handleCellClick(event) {
+    const { row, col } = event.target.dataset;
+    const cellIndex = Number(row) * numColumns + Number(col);
+  
+    const clickedCell = cellStatus[cellIndex];
+    const numGhouls = ghoulCount[cellIndex];
+    const numCitizens = citizenCount[cellIndex];
+  
+    const rebelsInGhouls = rebels.filter(rebel => Number(rebel.row) === Number(row) && Number(rebel.col) === Number(col) && rebel.faction === 'Ghoul');
+  
+    let ghoulsHealth = 0;
+    let ghoulsStrength = 0;
+    let ghoulsAggression = 0;
+    let ghoulsLuck = 0;
+    
+    for (const rebel of rebelsInGhouls) {
+      ghoulsHealth += rebel.health;
+      ghoulsStrength += rebel.strength;
+      ghoulsAggression += rebel.aggression;
+      ghoulsLuck += rebel.luck;
+    }
+    
+    const rebelsInCitizens = rebels.filter(rebel => Number(rebel.row) === Number(row) && Number(rebel.col) === Number(col) && rebel.faction === 'Citizen');
+  
+    let citizensHealth = 0;
+    let citizensStrength = 0;
+    let citizensAggression = 0;
+    let citizensLuck = 0;
+    
+    for (const rebel of rebelsInCitizens) {
+      citizensHealth += rebel.health;
+      citizensStrength += rebel.strength;
+      citizensAggression += rebel.aggression;
+      citizensLuck += rebel.luck;
+    }
+  
+    
+     const cellDetailsElement = document.getElementById('cell-details');
+    cellDetailsElement.innerHTML = `<br>
+      <span><b>SECTOR:</b> ${row}${col} &emsp;&emsp;<b>STATUS:</b> ${clickedCell.status}</span><br>
+      <span><b>GHOULS:</b> ${numGhouls}</span>
+      &emsp;&emsp;Health: ${ghoulsHealth}<br>
+      &emsp;&emsp;Strength: ${ghoulsStrength}<br>
+      &emsp;&emsp;Aggression: ${ghoulsAggression}<br> 
+      &emsp;&emsp;Luck: ${ghoulsLuck}<br><br>
+      <span><b>CITIZENS:</b> ${numCitizens}</span>
+      &emsp;&emsp;Health: ${citizensHealth}<br>
+      &emsp;&emsp;Strength: ${citizensStrength}<br>
+      &emsp;&emsp;Aggression: ${citizensAggression}<br>
+      &emsp;&emsp;Luck: ${citizensLuck} 
+      `;
+  
+     const snippetFirstClick = storySnippets.find((s) => s.title === 'snipFirstMapClick');
+      if (firstMapClick ===false) {
+        displayStorySnippet(snippetFirstClick.title);
+        firstMapClick = true; // Set the flag to indicate the first click has occurred
+       }
+  
+  }
+  
+  function handleButtonClick(button) {
+      // Add the "clicked" class to make the label bold
+    button.classList.add('clicked');
+  }
+
+*/
+
+
+  // Function to update the grid display after the battles
+  function updateGridDisplay() {
+    // Loop through each cell in the grid
+    for (let row = 0; row < numRows; row++) {
+      for (let col = 0; col < numColumns; col++) {
+        const cell = cellStatus.find(cell => cell.row === row && cell.col === col);
+
+        // Get rebels in the current cell
+        const rebelsInCell = rebels.filter(rebel => rebel.row === row && rebel.col === col);
+
+        // Check if there are any rebels in the cell
+        if (rebelsInCell.length > 0) {
+          // Get the last rebel in the cell (assuming only one rebel is displayed in each cell)
+          const lastRebel = rebelsInCell[rebelsInCell.length - 1];
+
+          // Update the cell status and display based on the last rebel's faction and status
+          const cellElement = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+          cellElement.dataset.status = lastRebel.getStatus();
+          cellElement.classList.add(lastRebel.faction.toLowerCase());
+
+          // Remove any previous rebel circles
+          cellElement.querySelectorAll('.rebel-circle').forEach(circle => circle.remove());
+
+          // Add the rebel circle to the cell if the rebel is alive
+          if (lastRebel.getStatus() !== 'Dead') {
+            const rebelCircle = document.createElement('div');
+            rebelCircle.className = 'rebel-circle';
+            rebelCircle.classList.add(lastRebel.faction.toLowerCase());
+            cellElement.appendChild(rebelCircle);
+          }
+        }
+      }
+    }
+  }

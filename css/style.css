@@ -1,0 +1,548 @@
+/* style.css */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 3em; /* Twice the size of the default h1 font */
+}
+
+/* Define the animation */
+
+@keyframes pulse-border {
+  0% {
+    border-width: 1px;
+  }
+  50% {
+    border-width: 2px;
+    border-color: yellow;
+      
+  }
+  100% {
+    border-width: 1px;
+  }
+}
+
+@keyframes pulse-screen {
+  0% {
+    border-width: 5px;
+  }
+  20% {
+    border-width: 5px;
+    border-color: rgb(255, 0, 0);
+  }
+  40%
+   {
+      border-width: 5px;
+      border-color: rgb(0, 0, 255);
+  }
+  100% {
+    border-width: 5px;
+  }
+}
+/* Set the size of the quadrant container */
+#quadrant-container {
+    width: 100%;
+    height: 95vh;
+    display: grid;
+/*    grid-template-columns: 1fr 1fr; Divide the container into two columns */ 
+    grid-template-columns: 50% 50%; 
+    grid-template-rows: 60vh 35vh; /* Set the height of the rows */
+  }
+  
+ /* Style the quadrants */
+.quadrant {
+    box-sizing: border-box;
+    border: 3px solid black;
+    position: relative; /* Add this line */
+  }
+  
+ /* padding for the right hand quadrants*/ 
+  #top-right-quadrant{
+    /*  #top-left-quadrant, */  
+      padding: 20px;
+      background-color: rgb(238, 218, 193); 
+      border: 5px solid black;
+
+
+    }
+
+    #top-left-quadrant {
+/*  #top-left-quadrant, */  
+  padding: 0px;
+  background-color: black; 
+border: 0px solid black;
+animation: pulse-screen 60s infinite; /* Run the animation infinitely */
+}
+
+#bottom-right-quadrant {
+  /*  #top-left-quadrant, */  
+    padding-top: 0px;
+    background-color: black; 
+  /* border: 10px solid black; */
+  }
+  
+
+#bottom-left-quadrant {
+  display: flex;
+  align-items: stretch;
+  padding: 5px;
+ /* background-color: rgb(238, 218, 193);*/
+  border: 5px solid black;
+  background-image: url('/img/metal.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: cover; /* This property makes the background image cover the entire element */
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+
+#footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px;
+}
+
+
+/* Position the grid in the top-left quadrant */
+#map-container {
+  width: 100%;
+  height: 100%;
+  background-image: url('/img/TokyoMap.png'); 
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+ /* Specify the grid lines to be black */
+#map-container > .grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* numCol and numRows need to be mirrored here */
+  grid-template-rows: repeat(8, 1fr);
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+/* Specify the grid lines to be yellow for fighting cells */
+#map-container > .grid > .cell {
+  border: 1px solid black;
+  border-color: black;
+  transition: border-color 0.3s ease-in-out;
+  /* Add the following flex properties */
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start; /* To align items to the start of the container */
+}
+
+#map-container > .grid > .cell.fighting {
+ border: 1px solid black;
+  background-color: rgba(255,255,0,0.3);
+  animation: pulse-border 5s infinite; /* Run the animation infinitely every 5 seconds */
+}
+ 
+#map-container > .grid > .cell.citizen {
+  border: 2px solid blue;
+  background-color: rgba(0,0,255,0.35);
+  animation: none;
+}
+
+#map-container > .grid > .cell.ghoul {
+  border: 2px solid red;
+  background-color: rgba(255,0,0,0.35);
+  animation: none;
+}
+
+
+#map-container > .grid > .cell.rage {
+  border: 1px solid purple;
+  background-color: rgba(135, 85, 148, 0.35); 
+   animation: pulse-border 1s infinite; /* Run the animation infinitely every 5 seconds */
+ }
+
+  /* Specify the grid lines to be black */
+#map-container > div {
+    box-sizing: border-box;
+    border: 1px solid black;
+  }
+
+  
+  /* Position the action log in the top-right quadrant */
+  #action-log {
+    grid-column: 2;
+    grid-row: 1;
+    position: absolute;
+    bottom: 10px;
+    /*height: 50px;*/
+    height: 100px; /* Increase the height to display more logs */
+    width: 95%;
+   /* overflow-y: auto; */
+    overflow-y: scroll;
+    background-color: burlywood;
+ }
+  
+  /* Position the input panel in the bottom-left quadrant */
+  #input-panel {
+    flex: 1;
+    grid-column: 1;
+    grid-row: 2;
+    margin-left: 10px;
+    font-weight: bold;
+  }
+  
+  #cell-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+ /*   align-items: flex-end; */
+    padding: 10px;
+    margin-left: 50px;
+    
+    /* Add any additional styles specific to the cell-details section */
+  }
+
+  /* Style the action log */
+  #game-actions {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Style the input panel form */
+  #game-form {
+    margin-top: 5px;
+  }
+  
+  .grid-cell {
+    border: 1px solid black;
+    /* Additional styling properties for the grid cells */
+  }
+
+  .slider-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+  }
+
+  .slider-label {
+    flex: 0 0 90px; /* Fixed width for the labels */
+  }
+
+  .slider {
+    flex: 0.8; /* Remaining space for the slider */
+  }
+
+
+  /* Add styles for the chosen faction */
+#chosen-faction {
+  font-weight: bold;
+}
+
+/* Styles for the Citizens faction */
+#chosen-faction.citizens {
+  color: blue;
+}
+
+/* Styles for the Ghouls faction */
+#chosen-faction.ghouls {
+  color: red;
+}
+
+.cell {
+  position: relative;
+}
+
+.rebel-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.citizen-circle {
+  width: 10px;
+  height: 10px;
+  background-color: blue;
+  border-radius: 50%;
+  opacity: 100%;
+ 
+}
+
+.ghoul-circle {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  opacity: 100%;
+}
+  
+  .hunter-circle {
+    width: 10px;
+    height: 10px;
+   background-color: rgb(53, 177, 177);
+   border-radius: 50%;
+    opacity: 100%;
+    
+  }
+
+.header-container {
+  display: flex;
+  align-items: left;  
+  justify-content: left;
+}
+
+.align-right {
+    float: right;
+  }
+
+  .align-left {
+    float: left;
+  }
+
+   #status-panels {
+    display: flex;
+    justify-content: space-between;
+    background-color: lightgrey;
+    border: 11px solid black;
+  }
+  
+  .status-panel {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+  }
+  
+  .status-panel h3 {
+    margin-top: 0;
+  }
+  
+  .status-panel .status-count {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  #aggregate-panels {
+    display: flex;
+    justify-content: space-between;
+    background-color: lightgrey;
+    border: 11px solid black;
+    flex-basis: 100%; /* Adjust this value as needed */
+  }
+  
+  .status-panel .aggregate-value {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  #time-panels {
+    display: flex;
+    justify-content: space-between;
+    background-color: lightgrey;
+    border: 11px solid black;
+  }
+  
+
+  .status-panel .panel-stamp {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+ /* Custom styles for the buttons */
+ #citizens-button, #ghouls-button  {
+  width: 70px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  font-size: 14px; /* Adjust the font size as needed */
+  border-radius: 5px;
+  background-color: lightgrey;
+  font-weight: bold;
+}
+
+#start-button {
+  width: 180px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  font-size: 14px; /* Adjust the font size as needed */
+  font-weight: bold;
+  background-color: lightgrey;
+  border-radius: 5px;
+}
+
+
+  #send-hunters-button, #ghoul-scream-button,#send-wave-2-button, #send-wave-3-button {
+  width: 115px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+  font-size: 14px; /* Adjust the font size as needed */
+  border-radius: 5px;
+  background-color: lightgrey;
+  font-weight: bold;
+}
+
+#citizens-button.clicked, #send-hunters-button.clicked {
+background-color: rgb(147, 200, 224);
+font-weight: bold;
+/*font-size: 18px;*/
+}
+
+#ghouls-button.clicked, #ghoul-scream-button.clicked {
+  background-color: rgb(238, 118, 118);
+  font-weight: bold;
+  /*font-size: 18px;*/
+  }
+
+  #start-button.clicked, #send-wave-2-button.clicked, #send-wave-3-button.clicked  {
+    background-color: rgb(220, 135, 231);
+    font-weight: bold;
+    /*font-size: 18px;*/
+    }
+  
+
+ 
+ /* Add this style to hide the non-chosen buttons */
+#citizens-button.notclicked,
+#ghouls-button.notclicked,
+#send-hunters-button.notclicked,
+#ghoul-scream-button.notclicked
+ {
+  display: none;
+}
+/* story backgrounds */
+
+.background-intro {
+  background-image: url('/img/City.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+
+.background-hunter {
+  background-image: url('/img/hunter.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-blank {
+  background-image: url('/img/blank.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-ghoulking {
+  background-image: url('/img/ghoulking.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-crosshairs {
+  background-image: url('/img/crosshairs2.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-fight {
+  background-image: url('/img/fight2.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-intensity {
+  background-image: url('/img/intensity.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-attack {
+  background-image: url('/img/attack2.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-ghoulwin {
+  background-image: url('/img/GhoulWin.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-citizenwin {
+  background-image: url('/img/CitizenWin.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-wave1 {
+  background-image: url('/img/wave1.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-wave2 {
+  background-image: url('/img/wave2.png'); /* Replace 'your-background-image.jpg' with the actual image file path */
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-wave3 {
+  background-image: url('/img/wave3.png'); 
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.background-specials {
+  background-image: url('/img/specials.png'); 
+  background-size: 20% auto;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+
+/* Custom styles for the battle results table */
+#battle-results {
+  font-size: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#battle-results th,
+#battle-results td {
+  border: 2px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+.table-header {
+  background-color: lightgray;
+}
+
+.table-cell-c {
+  background-color: rgb(147, 200, 224);
+}
+
+.table-cell-g {
+  background-color: rgb(238, 118, 118);
+}
+
+/* Add your existing button styles here */
+.rematch-button {
+  width: 180px;
+  height: 40px;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: lightgrey;
+ 
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Siege Tokyo</title>
+  <link rel="stylesheet" type="text/css" href="css/splash-style.css">
+</head>
+
+<body>
+  <audio id="splashSound" src="./sounds/Splash.mp3"></audio>
+
+  <div id="splashScreen">
+    <!-- Add your splash screen elements here -->
+    <img src="img/splash.png" alt="Siege Tokyo" width="100%" height="100%">
+    <audio autoplay><source src="./sounds/Splash.mp3" type="audio/mp3"></audio>
+   <!--<video autoplay muted>
+      <source src="img/Splash.mp4" type="video/mp4">
+    </video>
+  </div>-->
+
+  <script>
+    // Function to hide the splash screen and load index.html
+    function hideSplashScreen() {
+      window.location.href = 'index.html';
+    }
+
+    // After 5 seconds, hide the splash screen and load index.html
+    setTimeout(hideSplashScreen, 5100);
+  </script>
+</body>
+
+</html>
