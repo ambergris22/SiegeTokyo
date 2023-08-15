@@ -1444,13 +1444,13 @@ window.addEventListener('DOMContentLoaded', () => {
               updateCellStatus(row, col, STATUS.GHOUL);
               cellElement.classList.remove('fighting');
               cellElement.classList.add('ghoul');
-              addToActionLog(`Ghouls have triumphed in Sector ${Coord1}${Coord2}`);// post to action-log
+              addToActionLog(`Ghouls have TRIUMPHED in Sector ${Coord1}${Coord2}`);// post to action-log
             } else if (ghoulTotalHealth === 0 && citizenTotalHealth > 0) {
               cellElement.dataset.status = STATUS.CITIZEN;
               updateCellStatus(row, col, STATUS.CITIZEN);
               cellElement.classList.remove('fighting');
               cellElement.classList.add('citizen');
-              addToActionLog(`Citizens were victorious in Sector ${Coord1}${Coord2}`);// post to action-log
+              addToActionLog(`Citizens were VICTORIOUS in Sector ${Coord1}${Coord2}`);// post to action-log
             } //else if (ghoulTotalHealth === 0 && citizenTotalHealth === 0) {
             // cellElement.dataset.status = STATUS.EMPTY;
             // cellElement.classList.remove('ghoul');
