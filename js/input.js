@@ -1668,19 +1668,19 @@ window.addEventListener('DOMContentLoaded', () => {
       clearInterval(timerInterval);  // Stop the game timer
 
       if (finalcitizenSectors > finalghoulSectors) {
-        addToActionLog(`#########################################`);
+        addToActionLog(`################################################`);
         if (chosenFaction === 'Citizens') {addToActionLog(`WELL DONE! CITIZENS HAVE PREVAILED IN THE CITY!`);} //when on the winning team
         else {addToActionLog(`CITIZENS HAVE PREVAILED IN THE CITY!`);}
-        addToActionLog(`#########################################`);
+        addToActionLog(`################################################`);
       } else if (finalghoulSectors > finalcitizenSectors) {
-        addToActionLog(`#########################################`);
+        addToActionLog(`################################################`);
         if(chosenFaction === 'Ghouls'){addToActionLog(`SUCCESS! GHOULS NOW CONTROL TOKYO!`);} //when on the winning team
         else {addToActionLog(`GHOULS NOW CONTROL TOKYO!`);}
-        addToActionLog(`#########################################`);
+        addToActionLog(`################################################`);
       } else {
-        addToActionLog(`#########################################`);
+        addToActionLog(`################################################`);
         addToActionLog(`THE SIEGE IS TIED! THE STRUGGLE GOES ON.`);
-        addToActionLog(`#########################################`);
+        addToActionLog(`################################################`);
       }
       addToActionLog(`                                             `);
       gameOver();

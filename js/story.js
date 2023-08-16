@@ -52,7 +52,7 @@ const storySnippets = [
 
     {
       title: "snipFirstWave",
-      content: "<h2>THE FIRST WAVE</h2><br><font size='4'>It has begun! Tension is high and hostilities are spilling over. Factions are preparing to send scouts to investigate various parts of the city.<br><br>They can't afford to lose control to the enemy now.</font>",
+      content: "<h2>THE FIRST WAVE</h2><br><font size='4'>It has begun! Tensions are high and hostilities are spilling over. Factions are preparing to send scouts to investigate various parts of the city.<br><br>They can't afford to lose control to the enemy now.</font>",
     },
 
     {
