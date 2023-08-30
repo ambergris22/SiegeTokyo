@@ -212,6 +212,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let scanPassCounter = 0; // Global variable to keep track of the scan pass count
   let isBattleWinnerDeclared = false; //has the end of the game been reached
 
+
   // Initialize the counts for all cells to 0
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numColumns; col++) {
@@ -848,7 +849,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // DISPLAY STORY
 
+
   function displayStorySnippet(event) {
+
+ 
     // Retrieve the story snippet based on the game event
     const snippet = storySnippets.find((s) => s.title.toLowerCase() === event.toLowerCase());
 
@@ -873,8 +877,16 @@ window.addEventListener('DOMContentLoaded', () => {
       //snippetContainer.appendChild(snippetTitle);
       snippetContainer.appendChild(snippetContent);
       storyContainer.appendChild(snippetContainer);
+
+       }
     }
-  }
+  
+
+  
+  
+  
+  
+  
 
   // Display Snippet 1 on page load
   const snippet1 = storySnippets.find((s) => s.title === 'snipIntro');
@@ -1803,23 +1815,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return [Coord1, Coord2];
   }
 
-  const creditsLink = document.getElementById('credits-link');
-  const topRightQuadrant = document.getElementById('top-right-quadrant');
-
-  creditsLink.addEventListener('click', () => {
-    // Find the snippet with title 'snipCredit'
-    const snipCredit = storySnippets.find((s) => s.title === 'snipCredit');
-
-    // If the snippet exists, display it in the top right quadrant
-    if (snipCredit) {
-      displayStorySnippet(snipCredit.title);
-      removeAllSnipImages();
-      topRightQuadrant.classList.add('background-blank'); // Add the .background-credits class
-    }
-
-
-  });
-
+ 
   function SendEnemy() {
     setTimeout(() => {
       if (chosenFaction === 'Ghouls') {
@@ -1837,6 +1833,8 @@ window.addEventListener('DOMContentLoaded', () => {
     addToActionLog(`PLAYING_____╚═╝╩╚═╝╚═╝╚═╝___╩ ╚═╝╩ ╩ ╩ ╚═╝`);
 
   }
+
+
 
 });
 
